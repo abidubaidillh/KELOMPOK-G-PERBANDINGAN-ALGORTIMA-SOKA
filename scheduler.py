@@ -33,7 +33,8 @@ VM_PORT = 5000
 DATASET_FOLDER = "Dataset"
 
 DATASET_FILES = {
- 
+    "RandomSimple": os.path.join(DATASET_FOLDER, "RandomSimple"),
+    "RandomStratified": os.path.join(DATASET_FOLDER, "RandomStratified"),
     "Low-High": os.path.join(DATASET_FOLDER, "Low-High")
 }
 
