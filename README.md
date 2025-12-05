@@ -1,4 +1,4 @@
-# Algoritma-SMA---Kelompok-G---SOKA
+# Algoritma-SMA-Kelompok-G-SOKA
 
 ## Anggota Kelompok
 | No | Nama | NRP |
@@ -491,4 +491,5 @@ Pemanfaatan rendah pada FCFS dan RR disebabkan oleh waktu idle yang sangat panja
 Pada dataset Low-High (dengan beban tugas yang tidak seragam dan ekstrem), algoritma SMA memberikan hasil terbaik di hampir semua metrik kritis: Makespan, Waktu Tunggu, Throughput, dan Pemanfaatan Sumber Daya. Meskipun SMA memiliki Load Imbalance tertinggi, hal itu disebabkan oleh strategi yang efektif: mengoptimalkan Makespan dengan memfokuskan beban tugas ke sumber daya tercepat, alih-alih mengejar keseimbangan beban kerja yang sempurna.
 
 Sebaliknya, FCFS dan RR menunjukkan kinerja yang sangat buruk, sementara SHC, meskipun lebih baik dari FCFS/RR, tidak dapat menandingi efisiensi dan kecepatan SMA dalam lingkungan Low-High ini.
+
 
