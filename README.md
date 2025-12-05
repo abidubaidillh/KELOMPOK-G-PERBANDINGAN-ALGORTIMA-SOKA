@@ -340,6 +340,64 @@ Pada dataset RandomSimple, algoritma SHC memberikan hasil terbaik dengan makespa
 
 ## RandomStratified
 
+Pengujian dilakukan menggunakan dataset `RandomStratified`, dan kinerja diukur berdasarkan **Makespan, Average Execution, Average Wait Time, Throughput, Imbalance, dan Resource Utilization.**
+
+Tabel ringkasan hasil:
+
+| Algoritma | Makespan | Avg Exec  | Avg Wait  | Throughput | Imbalance | Resource Util |
+| --------- | -------- | --------- | --------- | ---------- | --------- | ------------- |
+| **SMA**   | 592.5105 | 5.116795  | 95.45651  | 2.6980482  |	1.649216  |	0.4552313     |
+| **FCFS**  | 434.2413 | 3.916082  | 79.55329  | 1.5791360  |	1.242339  |	0.2856812     |
+| **RR**    | 518.6475 | 4.242545  | 86.29168  | 1.7633940  |	1.333543  |	0.2904915     |
+| **SHC**   | 234.0293 | 3.477536  | 38.55168  | 2.5411772  |	1.309967  |	0.4767158295  |
+
+Keterangan:
+* Makespan: Total waktu penyelesaian seluruh tugas.
+
+* Average Execution Time: Rata-rata waktu eksekusi tugas.
+
+* Average Wait Time: Rata-rata waktu tugas menunggu dalam antrian.
+
+* Throughput: Jumlah tugas yang diselesaikan per satuan waktu.
+
+* Imbalance: Tingkat ketidakseimbangan beban kerja antar sumber daya (node/VM).
+
+* Resource Utilization: Tingkat pemanfaatan sumber daya yang tersedia.
+
+Indikator Kinerja:
+
+* Lebih Baik Rendah: Makespan, Avg Wait Time, Avg Execution, Imbalance.
+
+* Lebih Baik Tinggi: Throughput, Resource Utilization.
+
+# Hasil Analisis
+## 1. Efisiensi Waktu (Makespan & Wait Time)
+* Terdepan: Stochastic Hill Climbing (SHC) sangat dominan dengan makespan terendah (234.03s) dan waktu tunggu paling singkat (38.55s).
+
+* Tertinggal: SMA memiliki makespan tertinggi (592.51s) dan waktu tunggu terlama (95.46s). Ini menunjukkan SMA membutuhkan waktu konvergensi yang lebih lama atau menghasilkan jadwal yang kurang optimal secara global dibandingkan SHC.
+
+## 2. Efisiensi Eksekusi (Avg Execution & Imbalance)
+* Avg Execution Time: SHC memiliki rata-rata waktu eksekusi terendah (3.48s), yang menyiratkan bahwa algoritma ini mampu memetakan tugas ke sumber daya yang paling cocok (paling cepat memproses tugas tersebut). SMA memiliki rata-rata eksekusi tertinggi (5.12s), menandakan pemetaan tugas-ke-sumber daya yang kurang efisien (tugas sering dialokasikan ke mesin yang lambat).
+
+* Imbalance: FCFS memiliki nilai imbalance terbaik (1.24), yang berarti beban kerja terbagi paling rata. Sebaliknya, SMA memiliki imbalance terburuk (1.65). Ketidakseimbangan yang tinggi pada SMA berkontribusi langsung pada makespan yang buruk, karena beberapa mesin bekerja sangat keras (bottleneck) sementara yang lain menganggur.
+
+## 3. Produktivitas Sistem (Throughput & Utilization)
+* Throughput: Meskipun kinerjanya buruk di metrik lain, SMA mencatat throughput tertinggi (2.69). Ini adalah anomali menarik yang menunjukkan SMA sangat agresif menyelesaikan banyak tugas kecil di awal, tetapi gagal mengelola tugas-tugas berat di akhir.
+
+* Resource Utilization: Algoritma meta-heuristik/heuristik (SHC dan SMA) jauh lebih unggul dalam memanfaatkan sumber daya (45-47%) dibandingkan algoritma tradisional FCFS dan RR (~29%). Ini membuktikan bahwa algoritma cerdas lebih mampu mengisi waktu luang CPU dibandingkan algoritma antrian sederhana.
+
+# Kesimpulan 
+Berdasarkan keenam parameter kinerja, berikut adalah kesimpulannya:
+
+## 1. Algoritma Terbaik (Overall)
+Stochastic Hill Climbing (SHC). Algoritma ini unggul di hampir semua kategori kritis (Makespan, Wait Time, Execution Time, Utilization). Ia menawarkan solusi yang cepat dan seimbang.
+
+## 2. Kelemahan SMA
+Slime Mould Algorithm dalam skenario ini menunjukkan performa yang kurang stabil. Meskipun memiliki throughput tinggi, ia menderita akibat load balancing yang buruk (imbalance tinggi) dan pemilihan sumber daya yang kurang tepat (avg execution tinggi), menyebabkan waktu penyelesaian total menjadi sangat lama.
+
+## 3. Rekomendasi
+Jika prioritas sistem adalah menyelesaikan seluruh batch pekerjaan secepat mungkin, gunakan SHC. Jika sistem membutuhkan algoritma sederhana dengan pembagian beban yang sangat rata, FCFS bisa menjadi alternatif meskipun lebih lambat. SMA memerlukan optimasi lebih lanjut (misalnya hibridasi) untuk memperbaiki masalah ketidakseimbangannya.
+
 ## Low-High
 Tabel ringkasan hasil:
 
@@ -433,3 +491,4 @@ Pemanfaatan rendah pada FCFS dan RR disebabkan oleh waktu idle yang sangat panja
 Pada dataset Low-High (dengan beban tugas yang tidak seragam dan ekstrem), algoritma SMA memberikan hasil terbaik di hampir semua metrik kritis: Makespan, Waktu Tunggu, Throughput, dan Pemanfaatan Sumber Daya. Meskipun SMA memiliki Load Imbalance tertinggi, hal itu disebabkan oleh strategi yang efektif: mengoptimalkan Makespan dengan memfokuskan beban tugas ke sumber daya tercepat, alih-alih mengejar keseimbangan beban kerja yang sempurna.
 
 Sebaliknya, FCFS dan RR menunjukkan kinerja yang sangat buruk, sementara SHC, meskipun lebih baik dari FCFS/RR, tidak dapat menandingi efisiensi dan kecepatan SMA dalam lingkungan Low-High ini.
+
