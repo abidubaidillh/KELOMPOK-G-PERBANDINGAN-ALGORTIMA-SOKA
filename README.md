@@ -341,3 +341,95 @@ Pada dataset RandomSimple, algoritma SHC memberikan hasil terbaik dengan makespa
 ## RandomStratified
 
 ## Low-High
+Tabel ringkasan hasil:
+
+| Algoritma | Makespan | Avg Exec  | Avg Wait  | Throughput | Imbalance | Resource Util |
+| --------- | -------- | --------- | --------- | ---------- | --------- | ------------- |
+| **SMA**   | 110.7594 | 19.296921 | 9.157610  |  0.348596  | 1.588728  | 0.429177      |
+| **FCFS**  | 375.4764 | 20.624185 | 44.582877 |0.072266    | 0.986705  | 0.096842      |
+| **RR**    | 405.4657 | 19.694585 | 48.769750 | 0.066220   | 1.039915  | 0.086015      |
+| **SHC**   | 208.5062 | 21.426938 | 17.605345 | 0.168491   | 1.326200  | 0.230582      |
+
+## Interpretasi Metrik Kinerja (Dataset Low-High)
+### Makespan (Waktu Penyelesaian Total)
+- SMA menghasilkan Makespan terbaik (110.76 detik).
+
+- SHC berada di urutan kedua (208.51 detik).
+
+- FCFS dan RR menunjukkan performa sangat buruk, mencapai lebih dari 375 detik.
+
+## Interpretasi:
+
+- Pada dataset Low-High (yang memiliki variasi beban tugas yang ekstrem), algoritma SMA terbukti sangat efektif dalam menyeimbangkan tugas. SMA mampu menemukan alokasi tugas yang paling efisien, jauh mengungguli SHC.
+
+- Performa SHC, meskipun lebih baik dari FCFS/RR, menurun signifikan dibandingkan dengan Makespan SMA.
+
+- FCFS dan RR, tanpa mekanisme optimasi, gagal total menangani beban tugas yang tidak seragam ini.
+
+Average Execution Time (Waktu Eksekusi Rata-Rata)
+Nilai `avg_exec` SMA adalah yang terendah (`19.29 detik`).
+
+SHC memiliki waktu eksekusi rata-rata tertinggi (`21.42 detik`).
+
+## Interpretasi:
+
+Meskipun nilai `avg_exec` relatif mirip, perbedaan Makespan yang besar mengindikasikan bahwa SMA paling berhasil menempatkan tugas-tugas berat pada VM dengan core CPU yang sesuai.
+
+Waktu eksekusi rata-rata yang lebih rendah pada SMA menandakan bahwa, rata-rata, tugas-tugas ditempatkan pada VM yang dapat menyelesaikannya lebih cepat.
+
+Average Waiting Time (Waktu Tunggu Rata-Rata)
+Perbedaan paling signifikan terlihat pada metrik ini.
+
+- SMA (9.16 detik) memiliki waktu tunggu rata-rata jauh lebih kecil dibandingkan semua algoritma lain.
+
+- SHC (17.61 detik) berada di urutan kedua.
+
+- FCFS (44.58 detik) dan RR (48.77 detik) menghasilkan waktu tunggu yang sangat lama.
+
+## Interpretasi:
+
+Waktu tunggu yang sangat kecil pada SMA adalah penyebab utama Makespan yang unggul. Ini menunjukkan bahwa SMA mampu mengatasi kemacetan (bottleneck) dan mengurangi antrean tugas secara dramatis.
+
+Algoritma FCFS dan RR gagal mendistribusikan tugas besar, memaksa tugas lain menunggu sangat lama.
+
+Throughput (Laju Penyelesaian Tugas)
+- SMA memperoleh nilai tertinggi (0.3486 tugas/detik).
+
+- SHC berada di urutan kedua (0.1685 tugas/detik).
+
+## Interpretasi:
+
+Makespan yang sangat rendah pada SMA secara otomatis menghasilkan Throughput tertinggi. Ini menunjukkan bahwa SMA mampu menyelesaikan lebih dari dua kali lipat tugas per satuan waktu dibandingkan SHC di lingkungan Low-High ini.
+
+Load Imbalance (Tingkat Ketidakseimbangan)
+- FCFS memiliki ketidakseimbangan terendah (0.9867), diikuti oleh RR (1.0399).
+
+- SHC memiliki Imbalance Degree 1.3262.
+
+- SMA memiliki ketidakseimbangan tertinggi (1.5887).
+
+## Interpretasi:
+
+Ini adalah hasil yang kontra-intuitif namun penting: Load Imbalance yang tinggi tidak selalu berarti Makespan yang buruk.
+
+- FCFS dan RR memiliki Imbalance Degree rendah karena tugas-tugas sangat besar terdistribusi secara serial. Namun, meskipun seimbang, mereka lambat (Makespan tinggi).
+
+- SMA (Imbalance 1.5887) mampu mengorbankan keseimbangan sempurna untuk mencapai eksekusi paralel tercepat. Ini berarti SMA dengan cerdas membebani VM tercepat secara ekstrem untuk menampung sebagian besar beban tugas, sehingga Makespan total menjadi sangat rendah.
+
+
+### Shutterstock
+Resource Utilization (Pemanfaatan Sumber Daya)
+- SMA tertinggi (0.4291).
+
+- SHC kedua (0.2305).
+
+## Interpretasi:
+
+Sama seperti Makespan, SMA unggul dalam metrik efisiensi. SMA memaksimalkan penggunaan CPU/VM secara efisien karena Makespan yang sangat pendek menunjukkan bahwa sumber daya tidak terbuang untuk idle time yang lama.
+
+Pemanfaatan rendah pada FCFS dan RR disebabkan oleh waktu idle yang sangat panjang pada VM lain ketika VM yang memegang tugas terberat sedang memprosesnya.
+
+## Kesimpulan Akhir (Dataset Low-High)
+Pada dataset Low-High (dengan beban tugas yang tidak seragam dan ekstrem), algoritma SMA memberikan hasil terbaik di hampir semua metrik kritis: Makespan, Waktu Tunggu, Throughput, dan Pemanfaatan Sumber Daya. Meskipun SMA memiliki Load Imbalance tertinggi, hal itu disebabkan oleh strategi yang efektif: mengoptimalkan Makespan dengan memfokuskan beban tugas ke sumber daya tercepat, alih-alih mengejar keseimbangan beban kerja yang sempurna.
+
+Sebaliknya, FCFS dan RR menunjukkan kinerja yang sangat buruk, sementara SHC, meskipun lebih baik dari FCFS/RR, tidak dapat menandingi efisiensi dan kecepatan SMA dalam lingkungan Low-High ini.
